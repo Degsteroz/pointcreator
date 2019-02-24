@@ -23,7 +23,7 @@
         <br>Введите расположение по вертикали
         <br>(Или кликните курсором на карте):
         <br><input type="number" v-model="newPointY">
-        <br><button v-on:click="createNewPoint(points, newPointName, newPointAmount, newPointX, newPointY), formShow = !formShow" >Подтвердить</button>
+        <br><button v-on:click="createNewPoint(points, newPointName, newPointAmount, newPointX, newPointY)" >Подтвердить</button>
         <button v-on:click="formShow = !formShow" >Скрыть</button>
      </div>  
    </transition>
@@ -81,13 +81,13 @@ button{
   left: 1020px;
 }
 #newPointForm {
-  position: absolute;
+  position: fixed;
   background: gray;
   font-size: 10px;
   margin: 5px;
   padding: 5px;
-  left: 1010px;
-  top: 230px;
+  left: 1020px;
+  top: 300px;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
@@ -162,6 +162,9 @@ export default {
     },
     
     createNewPoint(array, newName, newAmount, gettedX, gettedY) {
+      if(newName == '') {
+      alert('Введите имя!')
+      } else {
       this.points.push({ id: array[array.length-1].id + 1,
       name: newName, 
       amount: this.amountValidate(newAmount),
@@ -173,6 +176,8 @@ export default {
        this.newPointX = '';
        this.newPointY = '';
        this.localStoragePusher()
+       this.formShow = !this.formShow
+      }
     },
     onDragEnd(event, pointId) {
       console.log('DRAGEND_EVENT', event, pointId);
