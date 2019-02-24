@@ -3,6 +3,7 @@
     <header><button v-on:click="logOut" >Выход</button>
     <button v-on:click="formShow = !formShow" >Создать новую точку</button>
     <button v-on:click="allChangesCancel()">Отменить все изменения</button></header>
+
     <div id ="form">
       <br>Название: 
       <br><input v-model="pointName">
@@ -11,6 +12,7 @@
       <br><button v-on:click="pointChangesConfirm(currentPointId, pointName, pointAmount)">Подтвердить изменения</button>
       <br><button v-on:click="pointRemove(currentPointId)">Удалить точку</button>
     </div>
+
      <transition name = "fade">
       <div id = "newPointForm" v-if="formShow">
         <br>Введите название:
@@ -27,9 +29,10 @@
         <button v-on:click="formShow = !formShow" >Скрыть</button>
      </div>  
    </transition>
+
     <div id="content">
       <img src="../assets/tutzing.svg" v-on:click="coordsGetter($event)">
-      <div 
+      <div
         draggable ="true" 
         v-for="point in points" :key ="point.id"
         v-on:click="onClick(point.name, point.amount, point.id)"
@@ -66,7 +69,15 @@ button{
   position: absolute;
 	width: 10px;
 	height: 10px;
-	background: red;
+	background: rgba(255, 0, 0, 0.644);
+	border-radius: 20px;
+  cursor: -webkit-grab;
+}
+.circle:active {
+  position: absolute;
+	width: 10px;
+	height: 10px;
+	background: rgb(255, 0, 0);
 	border-radius: 20px;
   cursor: -webkit-grab;
 }
@@ -75,14 +86,19 @@ button{
 }
 #form {
   position: fixed;
-  background: gray;
+  color: rgb(0, 0, 0);
+  background:#b5d0d0;
   margin: 5px;
+  border: 1px groove black;
   padding: 5px; 
   left: 1020px;
 }
 #newPointForm {
+  font: bold;
+  color: rgb(0, 0, 0);
   position: fixed;
-  background: gray;
+  border: 1px groove black;
+  background:#b5d0d0;
   font-size: 10px;
   margin: 5px;
   padding: 5px;
@@ -163,7 +179,7 @@ export default {
     
     createNewPoint(array, newName, newAmount, gettedX, gettedY) {
       if(newName == '') {
-      alert('Введите имя!')
+      alert('Введите название точки!')
       } else {
       this.points.push({ id: array[array.length-1].id + 1,
       name: newName, 
