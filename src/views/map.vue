@@ -27,11 +27,17 @@
     </div>
     <transition name = "fade">
       <div id = "newPointForm" v-if="formShow">
-       <p><input v-model="newPointName"></p>
-        <p><input type="number" v-model="newPointAmount"  ></p>
-        <p><input type="number" v-model="newPointX"></p>
-        <p><input type="number" v-model="newPointY"></p>
-        <button v-on:click="createNewPoint(points, newPointName, newPointAmount, newPointX, newPointY), formShow = !formShow" >Подтвердить</button>
+        <br>Введите название:
+        <br><input v-model="newPointName">
+        <br>Введите количество:
+        <br><input type="number" v-model="newPointAmount"  >
+        <br>Введите расположение по вертикали
+        <br>(Или кликните курсором на карте):
+        <br><input type="number" v-model="newPointX">
+        <br>Введите расположение по вертикали
+        <br>(Или кликните курсором на карте):
+        <br><input type="number" v-model="newPointY">
+        <br><button v-on:click="createNewPoint(points, newPointName, newPointAmount, newPointX, newPointY), formShow = !formShow" >Подтвердить</button>
         <button v-on:click="formShow = !formShow" >Скрыть</button>
      </div>  
    </transition>
@@ -83,6 +89,7 @@ button{
   float: right;
   background: gray;
   margin: 5px;
+  font-size: 10px
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
@@ -163,7 +170,7 @@ export default {
       x: this.coordsValidate(gettedY),
       y: this.coordsValidate(gettedX) });
        console.log('POINTS', this.points);
-       this.newPointName = 'Введите название точки';
+       this.newPointName = '';
        this.newPointAmount = '';
        this.newPointX = '';
        this.newPointY = '';
@@ -211,7 +218,7 @@ export default {
     points: [],
     pointName: 'Нажмите на точку',
     pointAmount: 'Нажмите на точку',
-    newPointName: 'Введите название точки',
+    newPointName: '',
     newPointAmount: 0,
     currentPointId: 0,
     newPointX: 0,
