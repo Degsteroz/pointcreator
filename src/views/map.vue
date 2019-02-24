@@ -3,19 +3,6 @@
     <header><button v-on:click="logOut" >Выход</button>
     <button v-on:click="formShow = !formShow" >Создать новую точку</button>
     <button v-on:click="allChangesCancel()">Отменить все изменения</button></header>
-    
-    <div id="content">
-    
-      <img src="../assets/tutzing.svg" v-on:click="coordsGetter($event)">
-      <div 
-        draggable ="true" 
-        v-for="point in points" :key ="point.id"
-        v-on:click="onClick(point.name, point.amount, point.id)"
-        v-on:dragend="onDragEnd($event, point.id)"
-        class="circle" v-bind:style="{top: point.x+'%', left:point.y+'%'}"
-      >
-      </div>
-    </div>
     <div id ="form">
       <br>Название: 
       <br><input v-model="pointName">
@@ -23,9 +10,8 @@
       <br><input type="number" v-model="pointAmount">
       <br><button v-on:click="pointChangesConfirm(currentPointId, pointName, pointAmount)">Подтвердить изменения</button>
       <br><button v-on:click="pointRemove(currentPointId)">Удалить точку</button>
-      
     </div>
-    <transition name = "fade">
+     <transition name = "fade">
       <div id = "newPointForm" v-if="formShow">
         <br>Введите название:
         <br><input v-model="newPointName">
@@ -41,6 +27,17 @@
         <button v-on:click="formShow = !formShow" >Скрыть</button>
      </div>  
    </transition>
+    <div id="content">
+      <img src="../assets/tutzing.svg" v-on:click="coordsGetter($event)">
+      <div 
+        draggable ="true" 
+        v-for="point in points" :key ="point.id"
+        v-on:click="onClick(point.name, point.amount, point.id)"
+        v-on:dragend="onDragEnd($event, point.id)"
+        class="circle" v-bind:style="{top: point.x+'%', left:point.y+'%'}"
+      >
+      </div>
+    </div> 
   </div>
 </template>
 
@@ -77,19 +74,20 @@ button{
     background: #aaa;
 }
 #form {
-  position: relative;
+  position: fixed;
   background: gray;
-  float: right;
   margin: 5px;
   padding: 5px; 
+  left: 1020px;
 }
 #newPointForm {
-  position: relative;
-  padding: 20px;
-  float: right;
+  position: absolute;
   background: gray;
+  font-size: 10px;
   margin: 5px;
-  font-size: 10px
+  padding: 5px;
+  left: 1010px;
+  top: 230px;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
