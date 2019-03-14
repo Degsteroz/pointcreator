@@ -5,45 +5,18 @@
       <button v-on:click="newPointformShow = !newPointformShow">Создать новую точку</button>
       <button v-on:click="allChangesCancel()">Отменить все изменения</button>
     </header>
+    <pointForm 
+    :pointRemove = pointRemove 
+    :currentPointDate = this.currentPointDate  
+    :pointChangesConfirm = pointChangesConfirm 
+    />
 
-    <div id="form">
-      <br>Название:
-      <br>
-      <input v-model="pointName" placeholder="Нажмите на точку">
-      <br>Количество товара:
-      <br>
-      <input type="number" min="0" v-model="pointAmount" placeholder="Нажмите на точку">
-      <br>
-      <button
-        v-on:click="pointChangesConfirm(currentPointId, pointName, pointAmount)"
-      >Подтвердить изменения</button>
-      <br>
-      <button v-on:click="pointRemove(currentPointId)">Удалить точку</button>
-    </div>
-
-    <transition name="fade">
-      <div id="newPointForm" v-if="newPointformShow">
-        <br>Название новой точки:
-        <br>
-        <input v-model="newPointName" placeholder="Введите название">
-        <br>Количество товара:
-        <br>
-        <input type="number" min="0" v-model="newPointAmount" placeholder="Введите количество">
-        <br>Введите расположение по вертикали
-        <br>(Или кликните курсором на карте):
-        <br>
-        <input type="number" min="0" max="100" v-model="newPointX">
-        <br>Введите расположение по вертикали
-        <br>(Или кликните курсором на карте):
-        <br>
-        <input type="number" min="0" max="100" v-model="newPointY">
-        <br>
-        <button
-          v-on:click="createNewPoint(points, newPointName, newPointAmount, newPointX, newPointY)"
-        >Подтвердить</button>
-        <button v-on:click="newPointformShow = !newPointformShow">Скрыть</button>
-      </div>
-    </transition>
+    <newPointForm 
+    :newPointformShow = newPointformShow
+    :pointGettedCoord = pointGettedCoord
+    :createNewPoint = createNewPoint
+    :newPointformShowCheck = newPointformShowCheck
+    />
 
     <div id="content">
       <img draggable="false" src="../assets/tutzing.svg" v-on:click="coordsGetter($event)">
@@ -97,15 +70,6 @@ button {
   cursor: -webkit-grab;
 }
 
-#form {
-  position: fixed;
-  color: rgb(0, 0, 0);
-  background: #b5d0d0;
-  margin: 5px;
-  border: 1px groove black;
-  padding: 5px;
-  left: 1020px;
-}
 #newPointForm {
   font: bold;
   color: rgb(0, 0, 0);
@@ -131,6 +95,8 @@ button {
 <script>
 import cookies from "js-cookie";
 import model from "../model/model";
+import pointForm from "./pointInfoForm.vue";
+import newPointForm from "./newPointForm.vue";
 export default {
   methods: {
     getPointValues: function(name, amount, id) {
@@ -181,15 +147,21 @@ export default {
     },
 
     pointRemove(pointId) {
+       const pointIndex = this.points.findIndex(item => {
+        return item.id === pointId;
+      });
       if (confirm("Удалить данную точку?")) {
-        this.points.splice(pointId, 1);
+        this.points.splice(pointIndex, 1);
         this.pointName = "";
         this.pointAmount = "";
         this.localStoragePush();
       }
     },
+    newPointformShowCheck: function(){
+      this.newPointformShow = !this.newPointformShow
+    },
 
-    createNewPoint(array, newName, newAmount, gettedX, gettedY) {
+    createNewPoint(newName, newAmount, gettedX, gettedY) {
       if (newName == "") {
         alert("Введите название точки!");
       } else {
@@ -197,7 +169,7 @@ export default {
           alert("Введите количество товара!");
         } else {
           this.points.push({
-            id: array[array.length - 1].id + 1,
+            id: this.points[this.points.length - 1].id + 1,
             name: newName,
             amount: newAmount,
             x: this.coordsValidate(gettedY),
@@ -250,6 +222,10 @@ export default {
       this.defaultPointsPositionPush();
     }
   },
+  components: {
+    pointForm,
+    newPointForm
+  },
 
   data: function() {
     return {
@@ -263,6 +239,22 @@ export default {
       newPointY: 0,
       newPointformShow: false
     };
+  },
+  computed:{
+    currentPointDate: function(){
+      return {
+        name: this.pointName,
+        amount: this.pointAmount,
+        id: this.currentPointId
+      }
+    },
+    pointGettedCoord:function(){
+      return{
+        x: this.newPointX,
+        y: this.newPointY,
+      }
+    }
+
   }
 };
 </script>
