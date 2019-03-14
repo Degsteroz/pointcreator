@@ -5,17 +5,17 @@
       <button v-on:click="newPointformShow = !newPointformShow">Создать новую точку</button>
       <button v-on:click="allChangesCancel()">Отменить все изменения</button>
     </header>
-    <pointForm 
-    :pointRemove = pointRemove 
-    :currentPointDate = this.currentPointDate  
-    :pointChangesConfirm = pointChangesConfirm 
+    <pointForm
+      :pointRemove="pointRemove"
+      :currentPointDate="this.currentPointDate"
+      :pointChangesConfirm="pointChangesConfirm"
     />
 
-    <newPointForm 
-    :newPointformShow = newPointformShow
-    :pointGettedCoord = pointGettedCoord
-    :createNewPoint = createNewPoint
-    :newPointformShowCheck = newPointformShowCheck
+    <newPointForm
+      :newPointformShow="newPointformShow"
+      :pointGettedCoord="pointGettedCoord"
+      :createNewPoint="createNewPoint"
+      :newPointformShowCheck="newPointformShowCheck"
     />
 
     <div id="content">
@@ -127,14 +127,14 @@ export default {
     cookiesCheck: function() {
       if (cookies.get("aut") === undefined) return this.$router.push("/");
     },
-//Отменяет все изменения в модель точек
+    //Отменяет все изменения в модель точек
     allChangesCancel: function() {
       if (confirm("Отменить все внесённые изменения?")) {
         localStorage.removeItem("changedPoints");
         this.defaultPointsPositionPush();
       }
     },
-//Вносит изменения в существующую точку
+    //Вносит изменения в существующую точку
     pointChangesConfirm(pointId, pointChangedName, pointChangedAmount) {
       const pointIndex = this.points.findIndex(item => {
         return item.id === pointId;
@@ -145,10 +145,10 @@ export default {
       this.points.splice(pointIndex, 1, changedPoint);
       this.localStoragePush();
     },
-//Удаляет точку. На входе получает Id точки, находит индекс и удаляет индекс. Находить индекс актуальной точки
-//лучше в данном методе, т.к. больше он нигде не нужен
+    //Удаляет точку. На входе получает Id точки, находит индекс и удаляет индекс. Находить индекс актуальной точки
+    //лучше в данном методе, т.к. больше он нигде не нужен
     pointRemove(pointId) {
-       const pointIndex = this.points.findIndex(item => {
+      const pointIndex = this.points.findIndex(item => {
         return item.id === pointId;
       });
       if (confirm("Удалить данную точку?")) {
@@ -159,10 +159,10 @@ export default {
       }
     },
     //Нужно для проверки статуса отображения формы с новой точкой
-    newPointformShowCheck: function(){
-      this.newPointformShow = !this.newPointformShow
+    newPointformShowCheck: function() {
+      this.newPointformShow = !this.newPointformShow;
     },
-//Создаёт новую точку на основании полученных имени, количества и координат
+    //Создаёт новую точку на основании полученных имени, количества и координат
     createNewPoint(newName, newAmount, gettedX, gettedY) {
       if (newName == "") {
         alert("Введите название точки!");
@@ -186,9 +186,9 @@ export default {
         }
       }
     },
-//Метод, вносящий изменения в модель точек. Изменяет модель после остановки переноса
-//Получает на вход ивент и ID точки. Берёт значения координат из ивента и переводит их в процентное значение
-//Потом изменяет модель на основании индекса точки, полученного из Id и пушит в ЛС для отрисовки при загрузке
+    //Метод, вносящий изменения в модель точек. Изменяет модель после остановки переноса
+    //Получает на вход ивент и ID точки. Берёт значения координат из ивента и переводит их в процентное значение
+    //Потом изменяет модель на основании индекса точки, полученного из Id и пушит в ЛС для отрисовки при загрузке
     onDragEnd(event, pointId) {
       const x = event.layerX;
       const y = event.layerY;
@@ -210,7 +210,7 @@ export default {
       const parsed = JSON.stringify(this.points);
       localStorage.setItem("changedPoints", parsed);
     },
-//Приводит модель к изначальному состоянию
+    //Приводит модель к изначальному состоянию
     defaultPointsPositionPush() {
       this.points = model.map((item, index) => ({
         ...item,
@@ -244,21 +244,20 @@ export default {
       newPointformShow: false
     };
   },
-  computed:{
-    currentPointDate: function(){
+  computed: {
+    currentPointDate: function() {
       return {
         name: this.pointName,
         amount: this.pointAmount,
         id: this.currentPointId
-      }
+      };
     },
-    pointGettedCoord:function(){
-      return{
+    pointGettedCoord: function() {
+      return {
         x: this.newPointX,
-        y: this.newPointY,
-      }
+        y: this.newPointY
+      };
     }
-
   }
 };
 </script>
