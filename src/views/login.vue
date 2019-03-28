@@ -5,7 +5,7 @@
       <form class="login" @submit.prevent="login">
         <h1>Авторизация</h1>
         <label>Логин</label>
-        <input required v-model="username" type="text" placeholder="Login">
+        <input required v-model="username" type="text" placeholder="Введите логин">
         <br>
         <br>
         <label>Пароль</label>
@@ -14,7 +14,7 @@
           v-model="password"
           autocomplete="password"
           type="password"
-          placeholder="Password"
+          placeholder="Введите пароль"
         >
         <p>
           <button type="submit">Login</button>

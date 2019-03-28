@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "js-cookie": "^2.2.0",
+    "v-validate": "^0.1.4",
+    "vee-validate": "^2.2.0",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1"
   },

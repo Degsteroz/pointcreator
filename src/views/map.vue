@@ -18,18 +18,12 @@
       :newPointformShowCheck="newPointformShowCheck"
     />
 
-    <div id="content">
-      <img draggable="false" src="../assets/tutzing.svg" v-on:click="coordsGetter($event)">
-      <div
-        draggable="true"
-        v-for="point in points"
-        :key="point.id"
-        v-on:click="getPointValues(point.name, point.amount, point.id)"
-        v-on:dragend="onDragEnd($event, point.id)"
-        class="circle"
-        v-bind:style="{top: point.x+'%', left:point.y+'%'}"
-      ></div>
-    </div>
+    <pointsForm 
+    :points="points"
+    :getPointValues = "getPointValues"
+    :coordsGetter = "coordsGetter"
+    :onDragEnd = "onDragEnd"
+    />
   </div>
 </template>
 
@@ -63,9 +57,9 @@ button {
 }
 .circle:active {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: rgb(255, 0, 0);
+  width: 12px;
+  height: 12px;
+  background: rgb(255, 0, 0, 0.644);
   border-radius: 20px;
   cursor: -webkit-grab;
 }
@@ -95,8 +89,9 @@ button {
 <script>
 import cookies from "js-cookie";
 import model from "../model/model";
-import pointForm from "./pointInfoForm.vue";
-import newPointForm from "./newPointForm.vue";
+import pointForm from "../components/pointInfoForm.vue";
+import newPointForm from "../components/newPointForm.vue";
+import pointsForm from "../components/pointsForm.vue";
 export default {
   methods: {
     getPointValues: function(name, amount, id) {
@@ -177,10 +172,10 @@ export default {
             x: this.coordsValidate(gettedY),
             y: this.coordsValidate(gettedX)
           });
-          this.newPointName = "";
-          this.newPointAmount = "";
-          this.newPointX = "";
-          this.newPointY = "";
+          // this.newPointName = "";
+          // this.newPointAmount = "";
+          // this.newPointX = "";
+          // this.newPointY = "";
           this.localStoragePush();
           this.newPointformShow = !this.newPointformShow;
         }
@@ -228,7 +223,8 @@ export default {
   },
   components: {
     pointForm,
-    newPointForm
+    newPointForm,
+    pointsForm
   },
 
   data: function() {
